@@ -1,114 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="Q-XbM2cd_CNRexjUQ9VFpJqhZxqwaHPSdarqKCTSTPw" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WordCount Pro | Modern Writing Utility</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Online Word & Character Counter | UtilitySuite</title>
+    <meta name="description" content="Count words and characters in your text instantly. Perfect for writers, students, and SEO content creators.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #6366f1; 
-            --dark: #0f172a; 
-            --bg: #f8fafc; 
+            --bg-color: #f1f5f9; 
+            --primary: #4f46e5;
+            --text: #1e293b;
+            --border: #e2e8f0;
+            --font-family: 'Outfit', sans-serif;
         }
-        
-        body { 
-            margin: 0; 
-            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); 
-            font-family: 'Inter', sans-serif; 
-            color: var(--dark); 
-            line-height: 1.6; 
-        }
-        
-        .wrapper { max-width: 700px; margin: 0 auto; padding: 60px 20px; }
-        
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { margin: 0; font-size: 2.5rem; letter-spacing: -0.02em; background: linear-gradient(to right, #4f46e5, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p.desc { color: #64748b; margin-top: 8px; }
+        body { margin: 0; font-family: var(--font-family); background-color: var(--bg-color); color: var(--text); display: flex; min-height: 100vh; }
 
-        textarea { 
-            width: 100%; min-height: 300px; border: 2px solid #e2e8f0; border-radius: 20px; 
-            padding: 24px; font-size: 16px; outline: none; box-sizing: border-box; 
-            background: white; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-        textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
+        .top-accent { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary); z-index: 1000; }
 
-        .ad-placeholder { 
-            background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 16px; 
-            padding: 20px; text-align: center; color: #94a3b8; margin: 30px 0; font-size: 0.85rem;
-            transition: opacity 0.3s;
-        }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; }
-        .stat-card { 
-            background: white; padding: 20px; border-radius: 16px; text-align: center; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 0.2s; border: 1px solid #f1f5f9;
-        }
-        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .stat-card strong { color: #64748b; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
-        .stat-card span { display: block; font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-top: 5px; }
+        .sidebar { width: 260px; background: white; border-right: 1px solid var(--border); padding: 60px 20px; flex-shrink: 0; }
+        .brand { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.25em; color: #64748b; margin-bottom: 30px; padding-left: 20px; }
         
-        footer { margin-top: 80px; text-align: center; font-size: 0.75rem; color: #94a3b8; }
+        #tools-sidebar { display: flex; flex-direction: column; }
+        .tool-btn { 
+            display: block; padding: 16px 20px; margin: 2px 0; border-radius: 10px; 
+            text-decoration: none; color: #475569; font-size: 13px; font-weight: 600; 
+            transition: all 0.2s; border-bottom: 1px solid #f8fafc;
+        }
+        .tool-btn:hover { background: #f5f3ff; color: var(--primary); border-bottom-color: #e0e7ff; }
+
+        .main-content { flex: 1; padding: 60px 40px; display: flex; flex-direction: column; align-items: center; }
+        .wrapper { max-width: 800px; width: 100%; }
+
+        h1 { margin: 0 0 40px 0; color: #0f172a; font-size: 2.5rem; font-weight: 800; letter-spacing: -0.04em; }
+
+        /* Ad Containers */
+        .ad-container { display: flex; justify-content: center; margin: 20px 0; overflow: hidden; }
+        
+        .card { background: white; padding: 32px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        
+        textarea { width: 100%; min-height: 200px; border: 2px solid var(--border); border-radius: 12px; padding: 20px; font-size: 16px; font-family: var(--font-family); box-sizing: border-box; outline: none; margin-bottom: 15px; background: #fcfcfd; }
+        textarea:focus { border-color: var(--primary); }
+
+        .card-actions { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .action-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .action-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-danger:hover { border-color: #ef4444; color: #ef4444; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .stat-card { background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
+        .stat-card strong { display: block; font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; }
+        .stat-card span { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-top: 4px; display: block; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 30px 20px; }
+            .main-content { padding: 30px 20px; }
+        }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <header>
+
+    <div class="top-accent"></div>
+
+    <aside class="sidebar">
+        <div class="brand">UtilitySuite</div>
+        <div id="tools-sidebar"></div>
+    </aside>
+
+    <main class="main-content">
+        <div class="wrapper">
             <h1>WordCount Pro</h1>
-            <p class="desc">Precision tracking for your writing workflow.</p>
-        </header>
 
-        <!-- Top Ad Unit -->
-        <div class="ad-placeholder">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : 'ea9023c6230a4134ea2bb21d415f3647',
-                    'format' : 'iframe',
-                    'height' : 90,
-                    'width' : 728,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/ea9023c6230a4134ea2bb21d415f3647/invoke.js"></script>
+            <!-- Top Ad Slot -->
+            <div class="ad-container">
+                <script>
+                    atOptions = { 'key' : 'ea9023c6230a4134ea2bb21d415f3647', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+                </script>
+                <script src="https://www.highperformanceformat.com/ea9023c6230a4134ea2bb21d415f3647/invoke.js"></script>
+            </div>
+
+            <div class="card">
+                <textarea id="textInput" placeholder="Start typing..."></textarea>
+                <div class="card-actions">
+                    <button class="action-btn" onclick="copyText()">Copy Text</button>
+                    <button class="action-btn btn-danger" onclick="clearText()">Clear</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><strong>Words</strong><span id="wordCount">0</span></div>
+                    <div class="stat-card"><strong>Chars</strong><span id="charCount">0</span></div>
+                    <div class="stat-card"><strong>Read</strong><span id="readTime">0m</span></div>
+                </div>
+            </div>
+
+            <!-- Middle Ad Slot -->
+            <div class="ad-container">
+                <script>
+                    atOptions = { 'key' : '7cf39fb102b8e5ac06d9ab8ec745e58c', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script src="https://www.highperformanceformat.com/7cf39fb102b8e5ac06d9ab8ec745e58c/invoke.js"></script>
+            </div>
         </div>
-
-        <textarea id="textInput" placeholder="Start typing ..."></textarea>
-
-        <div class="stats-grid">
-            <div class="stat-card"><strong>Words</strong><span id="wordCount">0</span></div>
-            <div class="stat-card"><strong>Chars</strong><span id="charCount">0</span></div>
-            <div class="stat-card"><strong>Reading</strong><span id="readTime">0m</span></div>
-        </div>
-
-        <!-- Bottom Ad Unit -->
-        <div class="ad-placeholder">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '7cf39fb102b8e5ac06d9ab8ec745e58c',
-                    'format' : 'iframe',
-                    'height' : 250,
-                    'width' : 300,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/7cf39fb102b8e5ac06d9ab8ec745e58c/invoke.js"></script>
-        </div>
-
-        <footer>
-            <p>© 2026 WordCount Pro | <a href="#" style="color:var(--primary)">Privacy</a> | <a href="#" style="color:var(--primary)">Contact</a></p>
-        </footer>
-    </div>
+    </main>
 
     <script>
         const input = document.getElementById('textInput');
-        input.addEventListener('input', () => {
+        function updateStats() {
             const text = input.value.trim();
             const words = text ? text.split(/\s+/).length : 0;
             document.getElementById('wordCount').innerText = words;
             document.getElementById('charCount').innerText = text.length;
             document.getElementById('readTime').innerText = Math.max(1, Math.round(words/200)) + 'm';
-        });
+        }
+        input.addEventListener('input', updateStats);
+        
+        function copyText() { input.select(); document.execCommand('copy'); }
+        function clearText() { input.value = ''; updateStats(); }
+
+        const tools = [
+            { name: "QR Generator", url: "https://zaraouilabs.github.io/QR-Code-Generator/" },
+            { name: "Image Compressor", url: "https://zaraouilabs.github.io/Image-Compressor/" },
+            { name: "Date Calculator", url: "https://zaraouilabs.github.io/Date-Calculator/" },
+            { name: "HEIC Converter", url: "https://zaraouilabs.github.io/HEIC-to-JPEG-converter/" },
+            { name: "WebP Converter", url: "https://zaraouilabs.github.io/webp-to-jpg-convertor/" },
+            { name: "JSON Formatter", url: "https://zaraouilabs.github.io/JSON-formatter/" },
+            { name: "Case Converter", url: "https://zaraouilabs.github.io/case-converter/" },
+            { name: "Percentage Calc", url: "https://zaraouilabs.github.io/percentage_counter/" },
+            { name: "Base64 Converter", url: "https://zaraouilabs.github.io/Base64_convertor/" },
+            { name: "Pass Generator", url: "https://zaraouilabs.github.io/Password_Generator/" },
+            { name: "Loan Calculator", url: "https://zaraouilabs.github.io/loan-calculator/" }
+        ];
+        document.getElementById('tools-sidebar').innerHTML = tools.map(t => `<a href="${t.url}" class="tool-btn">${t.name}</a>`).join('');
     </script>
     <script src="https://pl30403648.effectivecpmnetwork.com/8d/6e/16/8d6e16cf626599011a4b1d03060dc5cf.js"></script>
 </body>
